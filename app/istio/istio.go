@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"time"
 
 	"github.com/gold-kou/prism-in-k8s/app/params"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -128,7 +129,7 @@ func buildHTTPRoutes(host string, routes []params.VirtualServiceRoute) []*networ
 				Delay: &networkingv1alpha3.HTTPFaultInjection_Delay{
 					Percentage: &networkingv1alpha3.Percent{Value: percentage},
 					HttpDelayType: &networkingv1alpha3.HTTPFaultInjection_Delay_FixedDelay{
-						FixedDelay: &durationpb.Duration{Nanos: route.DelayNanos},
+						FixedDelay: durationpb.New(time.Duration(route.DelayNanos)),
 					},
 				},
 			}
